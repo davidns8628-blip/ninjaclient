@@ -12,9 +12,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "9.2.0"
-      - name: Unzip e corrigir settings
+      - name: Unzip e corrigir
         run: |
           unzip -o ninjaclient.zip
+          sed -i 's/\.getPos()/.getEntityPos()/g' ninjaclient/src/main/java/com/meuclient/modules/AutoCrystal.java
           cat > ninjaclient/settings.gradle <<'EOF'
           pluginManagement {
             repositories {
