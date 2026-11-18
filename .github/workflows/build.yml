@@ -12,7 +12,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "9.2.0"
-      - run: unzip -o ninjaclient.zip
+      - name: Unzip e corrigir settings
+        run: |
+          unzip -o ninjaclient.zip
+          cat > ninjaclient/settings.gradle <<'EOF'
+          pluginManagement {
+            repositories {
+              maven { url = 'https://maven.fabricmc.net/' }
+              gradlePluginPortal()
+              mavenCentral()
+            }
+          }
+          rootProject.name = 'ninjaclient'
+          EOF
       - run: cd ninjaclient && gradle build
       - uses: actions/upload-artifact@v4
         with:
